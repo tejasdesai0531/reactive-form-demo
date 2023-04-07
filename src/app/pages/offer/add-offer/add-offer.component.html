@@ -1,0 +1,45 @@
+<div>
+
+  <h1>Add Offer</h1>
+
+  <br>
+
+  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+
+    <div nz-row [nzGutter]="50">
+      <div nz-col class="gutter-row" nzSpan="8">
+        <p>Offer Name</p>
+        <input formControlName="name" nz-input placeholder="Please Enter Offer Name" />
+      </div>
+      <div nz-col class="gutter-row" nzSpan="8">
+        <p>Offer Code</p>
+        <input formControlName="code" nz-input placeholder="Please Enter Offer Code" />
+      </div>
+    </div>
+
+    <br>
+
+    <div nz-row [nzGutter]="50">
+      <div nz-col class="gutter-row" nzSpan="8">
+        <p>All Time Active</p>
+        <nz-select formControlName="allTimeActive">
+          <nz-option [nzValue]="true" nzLabel="Yes"></nz-option>
+          <nz-option [nzValue]="false" nzLabel="No"></nz-option>
+        </nz-select>
+      </div>
+      <div nz-col class="gutter-row" nzSpan="8">
+        <p>Start Date</p>
+        <nz-date-picker formControlName="startDate"></nz-date-picker>
+      </div>
+      <div nz-col class="gutter-row" nzSpan="8">
+        <p>End Date</p>
+        <nz-date-picker formControlName="endDate"></nz-date-picker>
+      </div>
+    </div>
+
+    <br>
+
+    <button type="submit" nz-button nzType="primary">Add Offer</button>
+  </form>
+
+</div>
