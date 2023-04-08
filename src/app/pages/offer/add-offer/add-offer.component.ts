@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OfferService } from '../offer.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CustomValidatorService } from 'src/app/common/custom-validator.service';
 
 @Component({
   selector: 'app-add-offer',
@@ -18,7 +19,8 @@ export class AddOfferComponent implements OnInit {
     private formBuilder: FormBuilder,
     private offerService: OfferService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private customValidator: CustomValidatorService
   ) {
 
   }
@@ -29,7 +31,8 @@ export class AddOfferComponent implements OnInit {
       code: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
       allTimeActive: [false],
       startDate: ['', Validators.required],
-      endDate: ['', Validators.required]
+      endDate: ['', Validators.required],
+      contact: ['', [Validators.required, this.customValidator.contactValidator()]]
     });
 
 
@@ -71,6 +74,7 @@ export class AddOfferComponent implements OnInit {
   onSubmit() {
     if(!this.offerForm.valid) {
       this.offerForm.markAllAsTouched()
+      return
     }
 
     let data = this.offerForm.value
@@ -110,6 +114,8 @@ export class AddOfferComponent implements OnInit {
         return `This field cannot be longer than ${control.errors!['maxlength'].requiredLength} characters.`;
       } else if (control.hasError('email')) {
         return 'Please enter a valid email address.';
+      } else if (control.hasError('invalidContact')) {
+        return 'Please enter valid contact number'
       }
     }
     return '';

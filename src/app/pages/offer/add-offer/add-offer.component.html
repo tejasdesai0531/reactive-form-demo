@@ -44,6 +44,16 @@
 
     <br>
 
+    <div nz-row [nzGutter]="50">
+      <div nz-col class="gutter-row" nzSpan="8">
+        <p>Contact <span class="required-mark" *ngIf="isRequired('contact')">*</span></p>
+        <input formControlName="contact" nz-input placeholder="Please Enter Contact Number" />
+        <p class="errorMsg">{{getErrorMessage('contact')}}</p>
+      </div>
+    </div>
+
+    <br>
+
     <button type="submit" nz-button nzType="primary">{{id ? 'Update' : 'Save'}}</button>
   </form>
 
