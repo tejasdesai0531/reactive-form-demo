@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OfferService } from '../offer.service';
 
 @Component({
   selector: 'app-offer-list',
@@ -28,9 +29,13 @@ export class OfferListComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private offerService: OfferService) { }
 
   ngOnInit(): void {
+  }
+
+  getOffers() {
+    return this.offerService.getOffers()
   }
 
 }

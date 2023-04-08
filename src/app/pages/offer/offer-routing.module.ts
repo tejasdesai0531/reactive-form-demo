@@ -6,7 +6,8 @@ import { AddOfferComponent } from './add-offer/add-offer.component';
 const routes: Routes = [
   { path: '', redirectTo: 'list', pathMatch: 'full' },
   { path: 'list', component: OfferListComponent },
-  { path: 'add-offer', component: AddOfferComponent }
+  { path: 'add-offer', component: AddOfferComponent },
+  { path: 'edit-offer/:id', component: AddOfferComponent }
 ];
 
 @NgModule({

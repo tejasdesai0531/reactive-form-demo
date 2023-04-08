@@ -8,12 +8,14 @@
 
     <div nz-row [nzGutter]="50">
       <div nz-col class="gutter-row" nzSpan="8">
-        <p>Offer Name</p>
+        <p>Offer Name <span class="required-mark" *ngIf="isRequired('name')">*</span></p>
         <input formControlName="name" nz-input placeholder="Please Enter Offer Name" />
+        <p class="errorMsg">{{getErrorMessage('name')}}</p>
       </div>
       <div nz-col class="gutter-row" nzSpan="8">
-        <p>Offer Code</p>
+        <p>Offer Code <span class="required-mark" *ngIf="isRequired('code')">*</span></p>
         <input formControlName="code" nz-input placeholder="Please Enter Offer Code" />
+        <p class="errorMsg">{{getErrorMessage('code')}}</p>
       </div>
     </div>
 
@@ -21,25 +23,28 @@
 
     <div nz-row [nzGutter]="50">
       <div nz-col class="gutter-row" nzSpan="8">
-        <p>All Time Active</p>
+        <p>All Time Active <span class="required-mark" *ngIf="isRequired('allTimeActive')">*</span></p>
         <nz-select formControlName="allTimeActive">
           <nz-option [nzValue]="true" nzLabel="Yes"></nz-option>
           <nz-option [nzValue]="false" nzLabel="No"></nz-option>
         </nz-select>
+        <p class="errorMsg">{{getErrorMessage('allTimeActive')}}</p>
       </div>
-      <div nz-col class="gutter-row" nzSpan="8">
-        <p>Start Date</p>
+      <div nz-col class="gutter-row" nzSpan="8" *ngIf="offerForm.get('allTimeActive')?.value === false">
+        <p>Start Date <span class="required-mark" *ngIf="isRequired('startDate')">*</span></p>
         <nz-date-picker formControlName="startDate"></nz-date-picker>
+        <p class="errorMsg">{{getErrorMessage('startDate')}}</p>
       </div>
-      <div nz-col class="gutter-row" nzSpan="8">
-        <p>End Date</p>
+      <div nz-col class="gutter-row" nzSpan="8" *ngIf="offerForm.get('allTimeActive')?.value === false">
+        <p>End Date <span class="required-mark" *ngIf="isRequired('endDate')">*</span></p>
         <nz-date-picker formControlName="endDate"></nz-date-picker>
+        <p class="errorMsg">{{getErrorMessage('endDate')}}</p>
       </div>
     </div>
 
     <br>
 
-    <button type="submit" nz-button nzType="primary">Add Offer</button>
+    <button type="submit" nz-button nzType="primary">{{id ? 'Update' : 'Save'}}</button>
   </form>
 
 </div>

@@ -3,11 +3,18 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class OfferService {
 
-  offerList: any = []
+  private offerList: any = []
   currentOfferId = 1
 
   constructor() { }
 
+  getOffers() {
+    return this.offerList
+  }
+
+  getOfferById(offerId: any) {
+    return this.offerList.find((offer: any) => offer.id == offerId)
+  }
 
   addOffer(offer: any) {
     this.offerList.push({
@@ -18,12 +25,18 @@ export class OfferService {
     this.currentOfferId++;
   }
 
-  editOffer(offer: any) {
-    let existingOffer = this.offerList.find((obj: any) => obj.id === offer.id)
+  editOffer(offer: any, offerId: any) {
+    let existingOffer = this.offerList.find((obj: any) => obj.id == offerId)
+
+    console.log("existingOffer", existingOffer)
 
     if(!existingOffer) return
 
-    existingOffer = offer
+    existingOffer.name = offer.name
+    existingOffer.code = offer.code
+    existingOffer.allTimeActive = offer.allTimeActive
+    existingOffer.startDate = offer.startDate
+    existingOffer.endDate = offer.endDate
   }
 
   removeOffer(offerId: any) {
