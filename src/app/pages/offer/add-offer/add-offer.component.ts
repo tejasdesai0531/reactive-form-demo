@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OfferService } from '../offer.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomValidatorService } from 'src/app/common/custom-validator.service';
+import { DropdownService } from 'src/app/common/dropdown.service';
+import { Observable, map, skip, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-add-offer',
@@ -15,12 +17,17 @@ export class AddOfferComponent implements OnInit {
 
   id: any = null
 
+  countries$!: Observable<any[]>;
+  states$!: Observable<any[]>;
+  cities$!: Observable<any[]>;
+
   constructor(
     private formBuilder: FormBuilder,
     private offerService: OfferService,
     private route: ActivatedRoute,
     private router: Router,
-    private customValidator: CustomValidatorService
+    private customValidator: CustomValidatorService,
+    private dropdownService: DropdownService
   ) {
 
   }
@@ -32,7 +39,10 @@ export class AddOfferComponent implements OnInit {
       allTimeActive: [false],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      contact: ['', [Validators.required, this.customValidator.contactValidator()]]
+      contact: ['', [Validators.required, this.customValidator.contactValidator()]],
+      country: [null, Validators.required],
+      state: [null, Validators.required],
+      city: [null, Validators.required]
     });
 
 
@@ -47,7 +57,40 @@ export class AddOfferComponent implements OnInit {
 
     });
 
+    this.countries$ = this.dropdownService.getCountryList()
 
+    this.states$ = this.offerForm.get('country')!.valueChanges.pipe(
+      switchMap(countryId => {
+
+        this.offerForm.get('state')!.reset({value: null, disabled: true});
+        this.offerForm.get('city')!.reset({value: null, disabled: true});
+
+        if(countryId) {
+          return this.dropdownService.getStateList(countryId)
+        } else {
+          return []
+        }
+      })
+    );
+
+    this.cities$ = this.offerForm.get('state')!.valueChanges.pipe(
+      switchMap(stateId => {
+
+        this.offerForm.get('city')!.reset({value: null, disabled: true});
+
+        if(stateId) {
+          return this.dropdownService.getCityList(stateId)
+        } else {
+          return []
+        }
+      })
+    );
+
+    this.states$.subscribe(() => this.offerForm.get('state')!.enable())
+    this.cities$.subscribe(() => this.offerForm.get('city')!.enable())
+  }
+
+  listenToAllTimeActive() {
     this.offerForm.get('allTimeActive')?.valueChanges.subscribe(value => {
 
       console.log(value)
@@ -93,7 +136,6 @@ export class AddOfferComponent implements OnInit {
 
   allTimeActiveChange(value: boolean) {
     console.log(value)
-
   }
 
   isRequired(controlName: string): boolean {

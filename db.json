@@ -1,0 +1,142 @@
+{
+  "country": [
+    {
+      "id": "1",
+      "name": "United States"
+    },
+    {
+      "id": "2",
+      "name": "Canada"
+    },
+    {
+      "id": "3",
+      "name": "Mexico"
+    },
+    {
+      "id": "4",
+      "name": "United Kingdom"
+    },
+    {
+      "id": "5",
+      "name": "Germany"
+    },
+    {
+      "id": "6",
+      "name": "France"
+    }
+  ],
+  "state": [
+    {
+      "id": "1",
+      "name": "California",
+      "countryId": "1"
+    },
+    {
+      "id": "2",
+      "name": "Texas",
+      "countryId": "1"
+    },
+    {
+      "id": "3",
+      "name": "Ontario",
+      "countryId": "2"
+    },
+    {
+      "id": "4",
+      "name": "Quebec",
+      "countryId": "2"
+    },
+    {
+      "id": "5",
+      "name": "Jalisco",
+      "countryId": "3"
+    },
+    {
+      "id": "6",
+      "name": "Yucatan",
+      "countryId": "3"
+    },
+    {
+      "id": "7",
+      "name": "England",
+      "countryId": "4"
+    },
+    {
+      "id": "8",
+      "name": "Bavaria",
+      "countryId": "5"
+    },
+    {
+      "id": "9",
+      "name": "Île-de-France",
+      "countryId": "6"
+    }
+  ],
+  "city": [
+    {
+      "id": "1",
+      "name": "Los Angeles",
+      "stateId": "1"
+    },
+    {
+      "id": "2",
+      "name": "San Francisco",
+      "stateId": "1"
+    },
+    {
+      "id": "3",
+      "name": "Houston",
+      "stateId": "2"
+    },
+    {
+      "id": "4",
+      "name": "Dallas",
+      "stateId": "2"
+    },
+    {
+      "id": "5",
+      "name": "Toronto",
+      "stateId": "3"
+    },
+    {
+      "id": "6",
+      "name": "Ottawa",
+      "stateId": "3"
+    },
+    {
+      "id": "7",
+      "name": "Montreal",
+      "stateId": "4"
+    },
+    {
+      "id": "8",
+      "name": "Quebec City",
+      "stateId": "4"
+    },
+    {
+      "id": "9",
+      "name": "Guadalajara",
+      "stateId": "5"
+    },
+    {
+      "id": "10",
+      "name": "Merida",
+      "stateId": "6"
+    },
+    {
+      "id": "11",
+      "name": "London",
+      "stateId": "7"
+    },
+    {
+      "id": "12",
+      "name": "Munich",
+      "stateId": "8"
+    },
+    {
+      "id": "13",
+      "name": "Paris",
+      "stateId": "9"
+    }
+  ]
+}
