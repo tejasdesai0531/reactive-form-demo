@@ -17,11 +17,6 @@ export class AddOfferComponent implements OnInit {
 
   id: any = null
 
-  countries$!: Observable<any[]>;
-  states$!: Observable<any[]>;
-  cities$!: Observable<any[]>;
-
-
   countryList: any = []
   stateList: any = []
   cityList: any = []
@@ -39,12 +34,12 @@ export class AddOfferComponent implements OnInit {
 
   ngOnInit(): void {
     this.offerForm = this.formBuilder.group({
-      name: ['test', Validators.required],
-      code: ['test', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      allTimeActive: [true],
+      name: ['', Validators.required],
+      code: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+      allTimeActive: [false],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      contact: ['8888888888', [Validators.required, this.customValidator.contactValidator()]],
+      contact: ['', [Validators.required, this.customValidator.contactValidator()]],
       country: [null, Validators.required],
       state: [null, Validators.required],
       city: [null, Validators.required]
@@ -148,10 +143,6 @@ export class AddOfferComponent implements OnInit {
 
     this.router.navigate(['/offer/list'])
 
-  }
-
-  allTimeActiveChange(value: boolean) {
-    console.log(value)
   }
 
   isRequired(controlName: string): boolean {
