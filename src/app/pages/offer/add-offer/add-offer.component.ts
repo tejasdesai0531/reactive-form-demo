@@ -21,6 +21,11 @@ export class AddOfferComponent implements OnInit {
   states$!: Observable<any[]>;
   cities$!: Observable<any[]>;
 
+
+  countryList: any = []
+  stateList: any = []
+  cityList: any = []
+
   constructor(
     private formBuilder: FormBuilder,
     private offerService: OfferService,
@@ -34,16 +39,19 @@ export class AddOfferComponent implements OnInit {
 
   ngOnInit(): void {
     this.offerForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      code: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      allTimeActive: [false],
+      name: ['test', Validators.required],
+      code: ['test', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+      allTimeActive: [true],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      contact: ['', [Validators.required, this.customValidator.contactValidator()]],
+      contact: ['8888888888', [Validators.required, this.customValidator.contactValidator()]],
       country: [null, Validators.required],
       state: [null, Validators.required],
       city: [null, Validators.required]
     });
+
+
+    this.listenToAllTimeActive()
 
 
     this.route.params.subscribe(params => {
@@ -51,43 +59,50 @@ export class AddOfferComponent implements OnInit {
 
       if(this.id) {
         let offer = this.offerService.getOfferById(this.id)
-        console.log(offer)
         this.offerForm.patchValue(offer)
+
+        this.getStateList(offer.country)
+        this.getCityList(offer.state)
       }
 
     });
 
-    this.countries$ = this.dropdownService.getCountryList()
+    this.getCountryList()
 
-    this.states$ = this.offerForm.get('country')!.valueChanges.pipe(
-      switchMap(countryId => {
+  }
 
-        this.offerForm.get('state')!.reset({value: null, disabled: true});
-        this.offerForm.get('city')!.reset({value: null, disabled: true});
+  getCountryList() {
+    this.dropdownService.getCountryList().subscribe((result) => {
+      this.countryList = result
+    })
+  }
+  getStateList(countryId: any) {
+    this.dropdownService.getStateList(countryId).subscribe((result) => {
+      this.stateList = result
+    })
+  }
+  getCityList(stateId: any) {
+    this.dropdownService.getCityList(stateId).subscribe((result) => {
+      this.cityList = result
+    })
+  }
 
-        if(countryId) {
-          return this.dropdownService.getStateList(countryId)
-        } else {
-          return []
-        }
-      })
-    );
+  countrySelected(countryId: any) {
+    this.stateList = []
+    this.cityList = []
 
-    this.cities$ = this.offerForm.get('state')!.valueChanges.pipe(
-      switchMap(stateId => {
+    this.offerForm.get('state')!.setValue(null)
+    this.offerForm.get('city')!.setValue(null)
 
-        this.offerForm.get('city')!.reset({value: null, disabled: true});
+    this.getStateList(countryId)
+  }
 
-        if(stateId) {
-          return this.dropdownService.getCityList(stateId)
-        } else {
-          return []
-        }
-      })
-    );
+  stateSelected(stateId: any) {
+    this.cityList = []
 
-    this.states$.subscribe(() => this.offerForm.get('state')!.enable())
-    this.cities$.subscribe(() => this.offerForm.get('city')!.enable())
+    this.offerForm.get('city')!.setValue(null)
+
+    this.getCityList(stateId)
   }
 
   listenToAllTimeActive() {
@@ -97,12 +112,12 @@ export class AddOfferComponent implements OnInit {
 
       if(value === true) {
         this.offerForm.get('startDate')?.clearValidators();
-        this.offerForm.get('startDate')?.setValue(null)
         this.offerForm.get('startDate')?.updateValueAndValidity();
+        this.offerForm.get('startDate')?.setValue(null)
 
         this.offerForm.get('endDate')?.clearValidators();
-        this.offerForm.get('endDate')?.setValue(null)
         this.offerForm.get('endDate')?.updateValueAndValidity();
+        this.offerForm.get('endDate')?.setValue(null)
       } else {
         this.offerForm.get('startDate')?.setValidators(Validators.required);
         this.offerForm.get('startDate')?.updateValueAndValidity();
@@ -115,6 +130,7 @@ export class AddOfferComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.offerForm)
     if(!this.offerForm.valid) {
       this.offerForm.markAllAsTouched()
       return
@@ -140,7 +156,7 @@ export class AddOfferComponent implements OnInit {
 
   isRequired(controlName: string): boolean {
     const control = this.offerForm.get(controlName);
-    return control && control.errors && control.errors['required']
+    return control?.hasValidator(Validators.required) || false
   }
 
   getErrorMessage(controlName: string): string {

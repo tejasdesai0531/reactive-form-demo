@@ -57,22 +57,22 @@
     <div nz-row [nzGutter]="50">
       <div nz-col class="gutter-row" nzSpan="8">
         <p>Country <span class="required-mark" *ngIf="isRequired('country')">*</span></p>
-        <nz-select formControlName="country">
-          <nz-option *ngFor="let country of countries$ | async" [nzValue]="country.id" [nzLabel]="country.name"></nz-option>
+        <nz-select formControlName="country" [nzDisabled]="countryList.length === 0" (ngModelChange)="countrySelected($event)">
+          <nz-option *ngFor="let country of countryList" [nzValue]="country.id" [nzLabel]="country.name"></nz-option>
         </nz-select>
         <p class="errorMsg">{{getErrorMessage('country')}}</p>
       </div>
       <div nz-col class="gutter-row" nzSpan="8">
         <p>State <span class="required-mark" *ngIf="isRequired('state')">*</span></p>
-        <nz-select formControlName="state">
-          <nz-option *ngFor="let state of states$ | async" [nzValue]="state.id" [nzLabel]="state.name"></nz-option>
+        <nz-select formControlName="state" [nzDisabled]="stateList.length === 0" (ngModelChange)="stateSelected($event)">
+          <nz-option *ngFor="let state of stateList" [nzValue]="state.id" [nzLabel]="state.name"></nz-option>
         </nz-select>
         <p class="errorMsg">{{getErrorMessage('state')}}</p>
       </div>
       <div nz-col class="gutter-row" nzSpan="8">
         <p>City <span class="required-mark" *ngIf="isRequired('city')">*</span></p>
-        <nz-select formControlName="city">
-          <nz-option *ngFor="let city of cities$ | async" [nzValue]="city.id" [nzLabel]="city.name"></nz-option>
+        <nz-select formControlName="city" [nzDisabled]="cityList.length === 0">
+          <nz-option *ngFor="let city of cityList" [nzValue]="city.id" [nzLabel]="city.name"></nz-option>
         </nz-select>
         <p class="errorMsg">{{getErrorMessage('city')}}</p>
       </div>
@@ -80,7 +80,9 @@
 
     <br>
 
-    <button type="submit" nz-button nzType="primary">{{id ? 'Update' : 'Save'}}</button>
+    <div style="display: flex; justify-content: center; margin-bottom: 50px;">
+      <button type="submit" nz-button nzType="primary">{{id ? 'Update' : 'Save'}}</button>
+    </div>
   </form>
 
 </div>
